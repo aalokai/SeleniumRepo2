@@ -1,0 +1,22 @@
+package tests;
+import static org.hamcrest.Matchers.*;
+
+import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.*;
+
+
+public class Test3 {
+	@Test
+	public void testGet() {
+		baseURI="https://reqres.in/api";
+		given()
+		.header("Authorization","x-api-key reqres-free-v1")
+		.get("/users?page=2")
+		.then()
+		.statusCode(200)
+		.body("data[4].first_name", equalTo("George"))
+		.body("data.first_name", hasItems("George","Rachel"));
+	}
+
+}

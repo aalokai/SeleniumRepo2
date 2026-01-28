@@ -1,0 +1,90 @@
+//Put, patch and delete examples
+
+package tests;
+
+import static io.restassured.RestAssured.baseURI;
+import static io.restassured.RestAssured.given;
+
+import org.json.simple.JSONObject;
+import org.testng.annotations.Test;
+
+import io.restassured.http.ContentType;
+
+public class Test4 {
+	@Test
+	public void testPut() {
+		
+		
+		JSONObject request=new JSONObject();
+		request.put("name", "Raghav");
+		request.put("job", "Teacher");
+		System.out.println(request);
+		System.out.println(request.toJSONString());
+		
+		
+		baseURI="https://reqres.in";
+		
+		given()
+		.header("x-api-key","reqres_f31b950dcdce430b9e770794bb44d4ed")
+//		.header("Content-Type","application/json")
+		.contentType(ContentType.JSON)
+		.accept(ContentType.JSON)
+		.body(request.toJSONString())
+		.when()
+		.put("/api/users/2")
+		.then()
+		.log()
+		.all()
+		.statusCode(200);
+		
+	}
+	
+	@Test
+	public void testPatch() {
+		
+		
+		JSONObject request=new JSONObject();
+		request.put("name", "Apple");
+		request.put("job", "Fruit");
+		System.out.println(request);
+		System.out.println(request.toJSONString());
+		
+		
+		baseURI="https://reqres.in";
+		
+		given()
+		.header("x-api-key","reqres_f31b950dcdce430b9e770794bb44d4ed")
+//		.header("Content-Type","application/json")
+		.contentType(ContentType.JSON)
+		.accept(ContentType.JSON)
+		.body(request.toJSONString())
+		.when()
+		.patch("/api/users/2")
+		.then()
+		.log()
+		.all()
+		.statusCode(200);
+		
+	}
+	
+	
+	@Test
+	public void testDelete() {
+		
+			
+		
+		baseURI="https://reqres.in";
+		
+		given()
+		.header("x-api-key","reqres_f31b950dcdce430b9e770794bb44d4ed")
+		.when()
+		.delete("/api/users/2")
+		.then()
+		.log()
+		.all()
+		.statusCode(204);
+		
+	}
+	
+
+}

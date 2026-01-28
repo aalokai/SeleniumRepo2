@@ -1,0 +1,35 @@
+
+	GET - https://rahulshettyacademy.com/maps/api/place/get/json?key=qaclick123&place_id=e8c102351efbe00ff7f568d8c56eeff8
+
+	POST - https://rahulshettyacademy.com/maps/api/place/add/json?key=qaclick123
+
+	{
+	"location":{
+	"lat":-38.383494,
+	"lng":33.427362
+	},
+	"accuracy":50,
+	"name":"Fontline house",
+	"phone_number":"(+91)983 893 3937",
+	"address":"29,side layout,cohen 09",
+	"types":[
+	"shoe park",
+	"shop"
+	],
+	"website":"http://google.com",
+	"language":"Frensch_IN"
+	}
+	Use the place_id got after POST or found in POST Body
+	PATCH - https://rahulshettyacademy.com/maps/api/place/update/json?key=qaclick123&place_id=06d4a453caa54ac98027462fe5417f20
+	{
+	"place_id":"06d4a453caa54ac98027462fe5417f20",
+	"address":"70 winter walk, USA",
+	"key":"qaclick123"
+	}
+
+	DELETE - https://rahulshettyacademy.com/maps/api/place/delete/json?key=qaclick123
+	{
+	 "place_id": "59bb356d5d761f4cdcdeef56863e3389"
+	}
+
+	

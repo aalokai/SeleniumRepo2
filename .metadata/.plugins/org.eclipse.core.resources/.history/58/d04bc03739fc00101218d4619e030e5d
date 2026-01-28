@@ -1,0 +1,54 @@
+
+package tests;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+
+import org.testng.annotations.Test;
+
+import io.restassured.http.ContentType;
+
+public class FakeStoreApiPutDeleteTests {
+
+    @Test
+    public void updateProduct_shouldReturn200_andUpdatedPrice_andMatchSchema() {
+        baseURI = "https://fakestoreapi.com";
+
+        // Build the updated product payload (POJO)
+        Product updated = new Product();
+        updated.setId(9);
+        updated.setTitle("string");
+        updated.setPrice(5.0); // update price
+        updated.setDescription("string");
+        updated.setCategory("string");
+        updated.setImage("http://example.com");
+
+        given()
+            .log().all()
+            .contentType(ContentType.JSON)
+            .accept(ContentType.JSON)
+            .body(updated)
+        .when()
+            .put("/products/{id}", 9)
+        .then()
+            .log().all()
+            .statusCode(200)
+            .body("id", equalTo(9))
+            .body("price", equalTo(5.0f)) // Hamcrest expects float for JSON numbers sometimes
+            .body(matchesJsonSchemaInClasspath("product-schema.json"));
+    }
+
+    @Test
+    public void deleteProduct_shouldReturn200() {
+        baseURI = "https://fakestoreapi.com";
+
+        given()
+            .log().all()
+        .when()
+            .delete("/products/{id}", 9)
+        .then()
+            .log().all()
+            .statusCode(200);
+    }
+}

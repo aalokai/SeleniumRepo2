@@ -1,0 +1,55 @@
+package tests;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import org.testng.annotations.Test;
+
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
+public class JsonPlaceholderGetPostTests {
+
+    @Test
+    public void getSinglePost() {
+        baseURI = "https://jsonplaceholder.typicode.com";
+
+        given()
+            .log().all()
+        .when()
+            .get("/posts/{id}", 1)
+        .then()
+            .log().all()
+            .statusCode(200)
+            .body("id", equalTo(1));
+    }
+
+    @Test
+    public void createPost() {
+        baseURI = "https://jsonplaceholder.typicode.com";
+
+        Post payload = new Post();
+        payload.setUserId(1);
+        payload.setTitle("My Apple");
+        payload.setBody("Apple, Banana JSONPlaceholder");
+
+        Response response =
+            given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(payload)
+            .when()
+                .post("/posts")
+            .then()
+                .log().all()
+                .statusCode(201)
+                .body("title", equalTo(payload.getTitle()))
+                .body("body", equalTo(payload.getBody()))
+                .extract()
+                .response();
+
+        Integer newId = response.path("id");
+        System.out.println("Newly created post id: " + newId);
+    }
+}

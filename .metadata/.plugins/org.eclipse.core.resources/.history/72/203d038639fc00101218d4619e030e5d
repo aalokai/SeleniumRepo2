@@ -1,0 +1,62 @@
+
+
+package tests;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import org.testng.annotations.Test;
+
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+
+public class FakeStoreApiTests {
+
+    @Test
+    public void getSingleProduct_shouldReturn200_andId1() {
+        baseURI = "https://jsonplaceholder.typicode.com";
+
+        given()
+            .log().all()
+        .when()
+            .get("/products/{id}", 1)
+        .then()
+            .log().all()
+            .statusCode(200)
+            .body("id", equalTo(1));
+    }
+
+    @Test
+    public void createProduct_shouldReturn201_andSameId_andExtractId() {
+        baseURI = "https://fakestoreapi.com";
+
+        // Build POJO
+        Product product = new Product();
+        product.setId(9);
+        product.setTitle("string");
+        product.setPrice(10.0);
+        product.setDescription("string");
+        product.setCategory("string");
+        product.setImage("http://hp.com");
+
+        // Send POST
+        Response response =
+            given()
+                .log().all()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(product) // Rest Assured will serialize POJO to JSON
+            .when()
+                .post("/products")
+            .then()
+                .log().all()
+                .statusCode(201)
+                .body("id", equalTo(9)) // validate same id
+                .extract()
+                .response();
+
+        // Extract the id of the newly created product
+        int newId = response.path("id");
+        System.out.println("Newly created product id: " + newId);
+    }
+}
