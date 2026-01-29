@@ -3,13 +3,13 @@
 <suite name="Failed suite [Bookswagon Suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Sample Test(failed)">
     <classes>
-      <class name="tests.SampleTest">
+      <class name="tests.LoginTest">
         <methods>
           <include name="setUp"/>
           <include name="tearDown"/>
-          <include name="openBookswagonAndVerifyTitle"/>
+          <include name="loginSearchFirstBookBuyNow"/>
         </methods>
-      </class> <!-- tests.SampleTest -->
+      </class> <!-- tests.LoginTest -->
     </classes>
   </test> <!-- Sample Test(failed) -->
 </suite> <!-- Failed suite [Bookswagon Suite] -->

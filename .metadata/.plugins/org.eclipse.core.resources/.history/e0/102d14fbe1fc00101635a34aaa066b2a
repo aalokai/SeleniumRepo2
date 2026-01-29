@@ -1,0 +1,49 @@
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.SearchResultsPage;
+
+public class LoginTest extends BaseTest {
+
+	@Test
+	public void loginSearchFirstBookBuyNow() throws Exception {
+	    startTest("Login → Search → First Book → Buy Now");
+
+	    // Login flow
+	    HomePage home = new HomePage(driver);
+	    home.openSite();
+	    home.goToLoginFromMyAccount();
+
+	    LoginPage login = new LoginPage(driver);
+	    login.loginWithYourAccount();
+	    test.info("Logged in successfully");
+
+	    // **TEMPORARY: Direct search after login**
+	    driver.get("https://www.bookswagon.com");
+	    Thread.sleep(3000);
+	    
+	    // Direct search using basic locators
+	    driver.findElement(org.openqa.selenium.By.id("ctl00_TopSearch1_txtSearch")).clear();
+	    driver.findElement(org.openqa.selenium.By.id("ctl00_TopSearch1_txtSearch")).sendKeys("Selenium");
+	    Thread.sleep(1000);
+	    driver.findElement(org.openqa.selenium.By.id("ctl00_TopSearch1_ImageButton1")).click();
+	    Thread.sleep(2000);
+	    test.info("Searched for Selenium using direct driver");
+
+	    // Now continue with SearchResultsPage
+	    SearchResultsPage results = new SearchResultsPage(driver);
+	    results.clickFirstBook();
+	    results.clickBuyNowOnFirstBook();
+	    test.info("Clicked first book and Buy Now");
+	}
+
+
+
+
+    
+}

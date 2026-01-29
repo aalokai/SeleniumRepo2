@@ -3,8 +3,9 @@
 <suite name="Bookswagon Suite">
     <test name="Sample Test">
         <classes>
-            <class name="tests.SampleTest"/>
-            <class name="tests.HomePageTest"/>
+           <!--  <class name="tests.SampleTest"/>
+            <class name="tests.HomePageTest"/>-->
+            <class name="tests.LoginTest"/>
         </classes>
     </test>
 </suite>

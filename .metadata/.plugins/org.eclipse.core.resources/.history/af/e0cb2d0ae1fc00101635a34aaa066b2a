@@ -1,0 +1,49 @@
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.SearchResultsPage;
+
+public class LoginTest extends BaseTest {
+
+	@Test
+	public void loginSearchFirstBookBuyNow() throws Exception {
+	    startTest("Login → Home → Search → First Book → Buy Now");
+
+	    HomePage home = new HomePage(driver);
+	    home.openSite();
+	    home.goToLoginFromMyAccount();
+
+	    LoginPage login = new LoginPage(driver);
+	    login.loginWithYourAccount();
+	    test.info("Logged in successfully");
+
+	    // **FIX: Wait longer for page to stabilize after login**
+	    Thread.sleep(5000); // 5 seconds hard wait
+	    test.info("Waited 5 seconds after login");
+
+	    // Reopen homepage to guarantee standard layout
+	    home.openSite();
+	    Thread.sleep(3000); // another 3 seconds for page load
+	    test.info("Homepage reloaded after login");
+
+	    // Now search
+	    home.searchBook("Selenium");
+	    test.info("Searched for Selenium books");
+
+	    SearchResultsPage results = new SearchResultsPage(driver);
+	    results.clickFirstBook();
+	    test.info("Clicked first book");
+
+	    results.clickBuyNowOnFirstBook();
+	    test.info("Clicked Buy Now");
+	}
+
+
+
+    
+}

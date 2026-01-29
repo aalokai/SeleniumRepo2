@@ -1,0 +1,70 @@
+package pages;
+
+import java.time.Duration;
+
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class BookDetailPage {
+
+    private WebDriver driver;
+    private WebDriverWait wait;
+
+    @FindBy(xpath = "//a[@class='btn border themebackground text-white d-block mb-2' and @onclick='BuyNowProduct();']")
+    private WebElement buyNowButton;
+
+    // **CHAT BOT CLOSE BUTTON** (common patterns)
+    @FindBy(xpath = "//button[contains(@class,'chat-close') or contains(@class,'close')] | //div[@class='chatbot-close']")
+    private WebElement chatCloseButton;
+
+    public BookDetailPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        PageFactory.initElements(driver, this);
+    }
+
+    public void clickBuyNow() {
+        // **STEP 1: Close chat bot first**
+        closeChatBot();
+        
+        // **STEP 2: Scroll Buy Now into view**
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", buyNowButton);
+        pause(1000);
+        
+        // **STEP 3: Try multiple click methods**
+        try {
+            wait.until(ExpectedConditions.elementToBeClickable(buyNowButton)).click();
+        } catch (Exception e1) {
+            try {
+                new Actions(driver).moveToElement(buyNowButton).click().perform();
+            } catch (Exception e2) {
+                // **FINAL: JavaScript click bypasses everything**
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", buyNowButton);
+            }
+        }
+        pause(2000);
+    }
+
+    private void closeChatBot() {
+        try {
+            // Try common chat bot close patterns
+            WebElement chatBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                org.openqa.selenium.By.xpath("//button[contains(@class,'close') or contains(@title,'close') or i[contains(@class,'close')]")));
+            chatBtn.click();
+            pause(500);
+        } catch (Exception e) {
+            // If no chat bot found, continue
+        }
+    }
+
+    private void pause(long millis) {
+        try { Thread.sleep(millis); }
+        catch (InterruptedException ex) { Thread.currentThread().interrupt(); }
+    }
+}

@@ -1,0 +1,50 @@
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.SearchResultsPage;
+
+public class LoginTest extends BaseTest {
+
+	@Test
+	public void loginSearchFirstBookBuyNow() {
+	    startTest("Login → Home → Search → First Book → Buy Now");
+
+	    HomePage home = new HomePage(driver);
+
+	    // 1. Open site and go to login
+	    home.openSite();
+	    test.info("Opened Bookswagon home page");
+
+	    home.goToLoginFromMyAccount();
+	    test.info("Clicked My Account and Login");
+
+	    // 2. Login
+	    LoginPage login = new LoginPage(driver);
+	    login.loginWithYourAccount();
+	    test.info("Logged in with valid credentials");
+
+	    // 3. After login, go back to homepage (same UI/locators as before)
+	    home.openSite();                // IMPORTANT: reload homepage after login
+	    test.info("Returned to homepage after login");
+
+	    // 4. Search a book
+	    home.searchBook("Selenium");
+	    test.info("Searched for Selenium");
+
+	    // 5. Search results – first book and Buy Now
+	    SearchResultsPage results = new SearchResultsPage(driver);
+	    results.clickFirstBook();
+	    test.info("Clicked first book");
+
+	    results.clickBuyNowOnFirstBook();
+	    test.info("Clicked Buy Now on first book");
+	}
+
+
+    
+}

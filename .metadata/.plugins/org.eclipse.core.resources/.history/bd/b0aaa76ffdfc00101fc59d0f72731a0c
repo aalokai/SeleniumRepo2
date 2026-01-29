@@ -1,0 +1,57 @@
+package tests;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.SearchResultsPage;
+
+import java.time.Duration;
+
+public class LoginTest extends BaseTest {
+
+    @Test
+    public void loginSearchFirstBookBuyNow() {
+        startTest("Full Flow: Login → Search → First Book → Buy Now");
+
+        // 1. Home → My Account → Login
+        HomePage home = new HomePage(driver);
+        home.openSite();
+        test.info("Opened Bookswagon homepage");
+
+        home.goToLoginFromMyAccount();
+        test.info("Navigated to login page");
+
+        // 2. Login with your credentials
+        LoginPage login = new LoginPage(driver);
+        login.loginWithYourAccount();
+        test.info("Submitted login credentials");
+
+        // 3. Wait for login to complete, then reload homepage
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        home.openSite();  // reloads homepage (search elements available)
+        test.info("Returned to homepage after login");
+
+        // 4. Search a book (uses your new locators: inputbar + btnTopSearch)
+        home.searchBook("Selenium");
+        test.info("Searched for Selenium books");
+
+        // 5. Click first book → Buy Now
+        SearchResultsPage results = new SearchResultsPage(driver);
+        results.clickFirstBook();
+        test.info("Clicked first book title");
+
+        results.clickBuyNowOnFirstBook();
+        test.info("Clicked Buy Now button");
+
+        test.pass("Full flow completed: reached product/cart page");
+    }
+}

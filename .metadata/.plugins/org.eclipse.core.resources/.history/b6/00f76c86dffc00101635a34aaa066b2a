@@ -1,0 +1,43 @@
+package tests;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import base.BaseTest;
+import pages.HomePage;
+import pages.LoginPage;
+import pages.SearchResultsPage;
+
+public class LoginTest extends BaseTest {
+
+	@Test
+	public void loginWithValidCredentials() {
+	    startTest("Login → Search → First Book → Buy Now");
+
+	    // Home → Login
+	    HomePage home = new HomePage(driver);
+	    home.openSite();
+	    home.goToLoginFromMyAccount();
+
+	    LoginPage login = new LoginPage(driver);
+	    login.loginWithYourAccount();
+	    test.info("Logged in successfully");
+
+	    // Search "Selenium" (or any book)
+	    home.searchBook("Selenium");
+	    test.info("Searched for Selenium books");
+
+	    // Click first book and Buy Now
+	    SearchResultsPage results = new SearchResultsPage(driver);
+	    results.clickFirstBook();
+	    test.info("Clicked first book");
+
+	    results.clickBuyNowOnFirstBook();
+	    test.info("Clicked Buy Now on first book");
+
+	    test.pass("Reached product page / cart");
+	}
+
+
+    
+}
